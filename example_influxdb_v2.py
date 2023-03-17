@@ -14,11 +14,11 @@ import solaredge_modbus
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser()
     argparser.add_argument("host", type=str, help="Modbus TCP address")
-    argparser.add_argument("port", type=int, help="Modbus TCP port")
+    argparser.add_argument("port", type=int, default=1502, help="Modbus TCP port")
     argparser.add_argument("--timeout", type=int, default=1, help="Connection timeout")
     argparser.add_argument("--unit", type=int, default=1, help="Modbus device address")
     argparser.add_argument("--interval", type=int, default=10, help="Update interval")
-    argparser.add_argument("--influx_url", type=str, default="localhost:8086", help="InfluxDB URL")
+    argparser.add_argument("--influx_url", type=str, default="http://localhost:8086", help="InfluxDB URL")
     argparser.add_argument("--influx_org", type=str, help="InfluxDB organisation")
     argparser.add_argument("--influx_bucket", type=str, default="solaredge", help="InfluxDB bucket")
     argparser.add_argument("--influx_token", type=str, help="InfluxDB token")
@@ -137,5 +137,5 @@ if __name__ == "__main__":
 
             json_body.append(battery_data)
 
-        influx.write(args.influx_db, org, json_body)
+        influx.write(args.influx_bucket, args.influx_org, json_body)
         time.sleep(args.interval)
